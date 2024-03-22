@@ -23,8 +23,8 @@ const background = computed<string>(() => {
 <style scoped>
 
 .size{
-    width:30px;
-    height:30px;
+    width:40px;
+    height:40px;
 }
 
 .filled{

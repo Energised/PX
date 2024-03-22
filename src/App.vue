@@ -1,8 +1,16 @@
 <script setup lang="ts">
+
+import { ref } from 'vue'
+
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
 import Square from './components/Square.vue'
 import Board from './components/Board.vue'
+
+import BoardDataGenerator from './features/BoardDataGenerator'
+
+const data = new BoardDataGenerator(10, 10);
+
 </script>
 
 <template>

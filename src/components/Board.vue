@@ -11,6 +11,8 @@ const props = defineProps<{
     height: number
 }>();
 
+// board data - load from persistence somehow
+
 const boardState = ref<boolean[][]>(
     [
         [false, false, false, false, false],
@@ -21,7 +23,6 @@ const boardState = ref<boolean[][]>(
     ]
 );
 
-// row hints go from top to bottom (looking at boardState)
 const rowHints = ref<number[][]>([
     [0, 2, 1],
     [0, 0, 5],
@@ -30,10 +31,6 @@ const rowHints = ref<number[][]>([
     [0, 0, 1]
 ]);
 
-const longestRowHint = computed<number>(() => {
-    return rowHints.value[0].length;
-});
-
 const columnHints = ref<number[][]>([
     [0, 4],
     [0, 2],
@@ -41,6 +38,12 @@ const columnHints = ref<number[][]>([
     [2, 2],
     [0, 3]
 ]);
+
+// computed methods
+
+const longestRowHint = computed<number>(() => {
+    return rowHints.value[0].length;
+});
 
 const longestColumnHint = computed<number>(() => {
     return columnHints.value[0].length;
@@ -54,6 +57,8 @@ const tableHeight = computed(() => {
     return props.height + longestColumnHint.value;
 });
 
+// functions
+
 function isEmptySpace(y : number, x : number) : boolean{
     // guaranteed empties
     if(y < longestColumnHint.value && x < longestRowHint.value){
@@ -63,7 +68,6 @@ function isEmptySpace(y : number, x : number) : boolean{
     // in column hint space
     if(y < longestColumnHint.value && x >= longestRowHint.value){
         let columnHintKey : number = x - longestRowHint.value;
-        // index for this hint array will always be y
         return columnHints.value[columnHintKey][y] == 0;
     }
 
@@ -107,28 +111,6 @@ function isBlockSpace(y : number, x : number) : boolean{
 </script>
 
 <template>
-    <!-- <table>
-        <template v-for="(row, x) in boardState">
-            <tr style="text-align:center">
-
-                <template v-for="n in longestColumnHint">
-                    <td>1</td>
-                    <td>1</td>
-                </template>
-
-
-                <template v-for="(state, y) in row">
-                    <td>
-                        <Block v-model="boardState[x][y]"
-                            :x="x"
-                            :y="y">
-                        </Block>
-                    </td>
-                </template>
-            </tr>
-        </template>
-
-    </table> -->
 
     <table>
         <template v-for="(_, y) in tableHeight">
