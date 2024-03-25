@@ -9,27 +9,32 @@ import Board from './components/Board.vue'
 
 import BoardDataGenerator from './features/BoardDataGenerator'
 
-let data = ref(new BoardDataGenerator(10, 10));
+// data
+
+let boardData = ref(new BoardDataGenerator(10, 10));
+
+// methods
 
 function regeneratePicross(){
-    data.value.update();
+    boardData.value.update();
 }
 
 </script>
 
 <template>
   <header>
-    <img alt="orange cat" class="logo" src="./assets/orange-cat.png" width="180" height="180" />
+    <img alt="orange cat" src="./assets/orange-cat.png" width="270" height="230" style="padding: 5%"/>
+
+    <button @click="regeneratePicross" style="padding: 5%">Regenerate Picross</button>
+
   </header>
 
   <main>
     <Board 
-        v-model="data"
-        :width="data.width"
-        :height="data.height">
+        v-model="boardData"
+        :width="boardData.width"
+        :height="boardData.height">
     </Board>
-
-    <button @click="regeneratePicross">Regenerate Picross</button>
   </main>
 
   <!-- Look into how flexboxes work again -->
@@ -51,6 +56,7 @@ header {
 @media (min-width: 1024px) {
   header {
     display: flex;
+    flex-flow: column;
     place-items: center;
     padding-right: calc(var(--section-gap) / 2);
   }
