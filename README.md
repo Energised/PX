@@ -5,17 +5,18 @@ Third times the charm
 
 ## Notes to Self
 
-- Row hints ALWAYS have preceeding 0's
-- This could be configured when loading from DB or just stored/loaded that way to ensure matching length arrays
+- Clean up the display for the board
+    - Redesign the flexbox to give board more space
+    - Align image to side
+    - Add a bar to the bottom for buttons, entering a custom board size
+    - Add a score counter for how many you've solved
 
-- Next Step - write a ts class that can:
+- More functionality for the player
+    - Add a right click function to create a hint highlight
+    - Let user build and design their own puzzle
+    - Find some good way of saying it - an API with some basic DB functionality
 
-    - Generate a random board state
-    - Generate the hints that go along with it
-    - Return that as a class along with all the values needed
-    - these can be passed into the Board component which will render everything and make it usable
-
-- Then generate a way to detect the win condition
+- Generate a way to detect the win condition
     - Add a little animation and message when the user has completed it
     - Add a regenerate picross puzzle button
     - Loop will start all over again

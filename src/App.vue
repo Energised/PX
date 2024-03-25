@@ -9,7 +9,11 @@ import Board from './components/Board.vue'
 
 import BoardDataGenerator from './features/BoardDataGenerator'
 
-const data = new BoardDataGenerator(10, 10);
+let data = ref(new BoardDataGenerator(10, 10));
+
+function regeneratePicross(){
+    data.value.update();
+}
 
 </script>
 
@@ -20,9 +24,12 @@ const data = new BoardDataGenerator(10, 10);
 
   <main>
     <Board 
-        :width="5"
-        :height="5">
+        v-model="data"
+        :width="data.width"
+        :height="data.height">
     </Board>
+
+    <button @click="regeneratePicross">Regenerate Picross</button>
   </main>
 
   <!-- Look into how flexboxes work again -->
