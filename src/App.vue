@@ -2,45 +2,58 @@
 
 import { ref } from 'vue'
 
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-import Square from './components/Square.vue'
+import type { Ref } from 'vue'
+
 import Board from './components/Board.vue'
 
 import BoardDataGenerator from './features/BoardDataGenerator'
 
 // data
 
-let boardData = ref(new BoardDataGenerator(10, 10));
+let width : Ref<number> = ref(10);
+let height : Ref<number> = ref(10);
+
+let boardData = ref(new BoardDataGenerator(width.value, height.value));
+
+// TODO: Board Validator
 
 // methods
 
 function regeneratePicross(){
-    boardData.value.update();
+    boardData.value.update(width.value, height.value);
 }
 
 </script>
 
 <template>
-  <header>
-    <img alt="orange cat" src="./assets/orange-cat.png" width="270" height="230" style="padding: 5%"/>
 
-    <button @click="regeneratePicross" style="padding: 5%">Regenerate Picross</button>
+    <div style="display:flex; justify-content:space-between;">
+        <div style="display:flex; flex-direction:column; justify-content:space-between">
+            <img alt="orange cat" src="./assets/orange-cat.png" width="270" height="230" style="padding: 5%"/>
+            <div style="display:flex; justify-content:space-evenly">
+                <label>Width</label>
+                <input v-model="width" type="number" style="background-color:dimgrey; border:0px"/>
+            </div>
+            <div style="display:flex; justify-content:space-evenly">
+                <label>Height</label>
+                <input v-model="height" type="number" style="background-color:dimgrey; border:0px"/>
+            </div>
+            <button @click="regeneratePicross" style="padding: 5%">Regenerate Picross</button>
+        </div>
 
-  </header>
+        <div style="flex-basis:60%">
+            <Board 
+                v-model="boardData"
+                :width="boardData.width"
+                :height="boardData.height">
+            </Board>
+        </div>
+    </div>
 
-  <main>
-    <Board 
-        v-model="boardData"
-        :width="boardData.width"
-        :height="boardData.height">
-    </Board>
-  </main>
+    <div>
+        wandoolsey
+    </div>
 
-  <!-- Look into how flexboxes work again -->
-  <footer class="">
-    wandoolsey
-  </footer>
 </template>
 
 <style scoped>
@@ -66,9 +79,9 @@ header {
   }
 
   header .wrapper {
-    display: flex;
+    /*display: flex;
     place-items: flex-start;
-    flex-wrap: wrap;
+    flex-wrap: wrap;*/
   }
 }
 </style>

@@ -22,7 +22,10 @@ export default class BoardDataGenerator{
 
     // regenerate board
 
-    update(): void{
+    update(width: number, height: number): void{
+        this.width = width;
+        this.height = height;
+        
         this.boardState = [];
         this.columnHints = [];
         this.rowHints = [];
