@@ -2,13 +2,13 @@
 
 import { ref, reactive, computed } from 'vue'
 
-//import { BoardData } from "../features/BoardData"
+import { BoardData } from "../features/BoardData"
 
 import Block from "./Block.vue"
 import Hint from "./Hint.vue"
 import Empty from "./Empty.vue"
 
-const model = defineModel<BoardData>();
+const model = defineModel<BoardData>({default: BoardData});
 
 const props = defineProps<{
     width: number
