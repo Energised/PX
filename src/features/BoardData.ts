@@ -1,4 +1,4 @@
-export default class BoardDataGenerator{
+export class BoardData{
 
     width: number;
     height: number;
@@ -7,11 +7,15 @@ export default class BoardDataGenerator{
     columnHints: number[][];
     rowHints: number[][];
 
+    // useful for validation, not used for board display
+    boardStateAsColumns: boolean[][];
+
     constructor(width: number, height: number){
         this.width = width;
         this.height = height;
 
         this.boardState = [];
+        this.boardStateAsColumns = [];
         this.columnHints = [];
         this.rowHints = [];
 
@@ -35,8 +39,6 @@ export default class BoardDataGenerator{
         this.generateRowHints();
     }
 
-    // build picross data
-
     generateBoardState() : void{
         let newRow : boolean[] = [];
         let newState : boolean = false;
@@ -56,24 +58,9 @@ export default class BoardDataGenerator{
      */
     generateColumnHints() : void{
         let vm = this;
-        let boardStateAsColumns : boolean[][] = getColumnAlignedBoardState();
+        this.boardStateAsColumns = this.generateColumnAlignedBoardState();
         this.columnHints = generateColumnHints();
         this.applyPreceedingZeroesToHints(this.columnHints);
-
-        function getColumnAlignedBoardState() : boolean[][]{
-            let columnAlignedBoardState : boolean[][] = [];
-            let column : boolean[] = [];
-
-            for(let w = 0; w < vm.width; w++){
-                for(let h = 0; h < vm.height; h++){
-                    column.push(vm.boardState[h][w]);
-                }
-                columnAlignedBoardState.push(column);
-                column = [];
-            }
-
-            return columnAlignedBoardState;
-        }
 
         function generateColumnHints() : number[][]{
             let columnHints : number[][] = [];
@@ -81,7 +68,7 @@ export default class BoardDataGenerator{
             let columnAsHints : number[] = [];
             let countsOfOne = 0;
             for(let w = 0; w < vm.width; w++){
-                let boardStateColumn : boolean[] = boardStateAsColumns[w];
+                let boardStateColumn : boolean[] = vm.boardStateAsColumns[w];
                 for(let h = 0; h < vm.height; h++){
                     // if current element is true
                     if(boardStateColumn[h]){
@@ -142,7 +129,20 @@ export default class BoardDataGenerator{
         }
     }
 
-    // general methods
+    generateColumnAlignedBoardState() : boolean[][]{
+        let columnAlignedBoardState : boolean[][] = [];
+        let column : boolean[] = [];
+
+        for(let w = 0; w < this.width; w++){
+            for(let h = 0; h < this.height; h++){
+                column.push(this.boardState[h][w]);
+            }
+            columnAlignedBoardState.push(column);
+            column = [];
+        }
+
+        return columnAlignedBoardState;
+    }
 
     getRandomBlockValue() : boolean{
         let valueAsNumber : number = this.randomNumberFrom0To(100) % 2;

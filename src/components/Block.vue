@@ -7,16 +7,23 @@ var props = defineProps<{
     y: number
 }>();
 
+var emit = defineEmits(['blockUpdated']);
+
 const model = defineModel<boolean>({ default: false});
 
 const background = computed<string>(() => {
     return model.value ? "filled" : "empty";
 });
 
+function selectBlock(){
+    model.value = !model.value;
+    emit("blockUpdated");
+}
+
 </script>
 
 <template>
-    <div class="size" @click="model = !model" :class="background">
+    <div class="size" @click="selectBlock()" :class="background">
     </div>
 </template>
 

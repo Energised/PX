@@ -2,16 +2,20 @@
 
 import { ref, reactive, computed } from 'vue'
 
+//import { BoardData } from "../features/BoardData"
+
 import Block from "./Block.vue"
 import Hint from "./Hint.vue"
 import Empty from "./Empty.vue"
 
-const model = defineModel<BoardDataGenerator>();
+const model = defineModel<BoardData>();
 
 const props = defineProps<{
     width: number
     height: number
 }>();
+
+const emit = defineEmits(['validateBoard']);
 
 // computed methods
 
@@ -82,6 +86,10 @@ function isBlockSpace(y : number, x : number) : boolean{
         && isColumnHintSpace(y, x) == false;
 }
 
+function validateBoard(){
+    emit("validateBoard");
+}
+
 </script>
 
 <template>
@@ -114,7 +122,8 @@ function isBlockSpace(y : number, x : number) : boolean{
                             <Block
                                 v-model="model.boardState[y - longestColumnHint][x - longestRowHint]"
                                 :y="y - longestColumnHint"
-                                :x="x - longestRowHint">
+                                :x="x - longestRowHint"
+                                @block-updated="validateBoard()">
                             </Block>
                         </template>
                     </td>

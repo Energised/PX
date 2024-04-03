@@ -6,21 +6,22 @@ import type { Ref } from 'vue'
 
 import Board from './components/Board.vue'
 
-import BoardDataGenerator from './features/BoardDataGenerator'
+import { BoardData } from './features/BoardData'
+import { BoardDataValidator} from './features/BoardDataValidator'
 
 // data
 
 let width : Ref<number> = ref(10);
 let height : Ref<number> = ref(10);
 
-let boardData = ref(new BoardDataGenerator(width.value, height.value));
-
-// TODO: Board Validator
+let boardData = ref(new BoardData(width.value, height.value));
+let boardDataValidator = ref(new BoardDataValidator(boardData.value));
 
 // methods
 
 function regeneratePicross(){
     boardData.value.update(width.value, height.value);
+    boardDataValidator.value.validate();
 }
 
 </script>
@@ -32,20 +33,25 @@ function regeneratePicross(){
             <img alt="orange cat" src="./assets/orange-cat.png" width="270" height="230" style="padding: 5%"/>
             <div style="display:flex; justify-content:space-evenly">
                 <label>Width</label>
-                <input v-model="width" type="number" style="background-color:dimgrey; border:0px"/>
+                <input v-model.number="width" style="background-color:dimgrey; border:0px"/>
             </div>
             <div style="display:flex; justify-content:space-evenly">
                 <label>Height</label>
-                <input v-model="height" type="number" style="background-color:dimgrey; border:0px"/>
+                <input v-model.number="height" style="background-color:dimgrey; border:0px"/>
             </div>
             <button @click="regeneratePicross" style="padding: 5%">Regenerate Picross</button>
+            <!--<button @click="validateBoard" style="padding: 5%">Check Valid</button>-->
+            <div>
+                <label>{{ boardDataValidator.isValid ? "VALID :)" : "SORRY :(" }}</label>
+            </div>
         </div>
 
         <div style="flex-basis:60%">
             <Board 
                 v-model="boardData"
                 :width="boardData.width"
-                :height="boardData.height">
+                :height="boardData.height"
+                @validate-board="boardDataValidator.validate()">
             </Board>
         </div>
     </div>
@@ -85,3 +91,4 @@ header {
   }
 }
 </style>
+./features/BoardData
