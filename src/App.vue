@@ -28,25 +28,33 @@ function regeneratePicross(){
 
 <template>
 
-    <div style="display:flex; justify-content:space-between;">
-        <div style="display:flex; flex-direction:column; justify-content:space-between">
-            <img alt="orange cat" src="./assets/orange-cat.png" width="270" height="230" style="padding: 5%"/>
-            <div style="display:flex; justify-content:space-evenly">
-                <label>Width</label>
-                <input v-model.number="width" style="background-color:dimgrey; border:0px"/>
-            </div>
-            <div style="display:flex; justify-content:space-evenly">
-                <label>Height</label>
-                <input v-model.number="height" style="background-color:dimgrey; border:0px"/>
-            </div>
-            <button @click="regeneratePicross" style="padding: 5%">Regenerate Picross</button>
-            <!--<button @click="validateBoard" style="padding: 5%">Check Valid</button>-->
-            <div>
-                <label>{{ boardDataValidator.isValid ? "VALID :)" : "SORRY :(" }}</label>
-            </div>
-        </div>
+    <div style="display: flow-root;">
 
-        <div style="flex-basis:60%">
+        <table class="options">
+            <tr>
+                <td colspan="2"><img alt="orange cat" src="./assets/orange-cat.png" width="270" height="230" style=""/></td>
+            </tr>
+            
+            <tr>
+                <td><label>Width</label></td>
+                <td><input v-model.number="width" style="background-color:dimgrey; border:0px"/></td>
+            </tr>
+            <tr>
+                <td><label>Height</label></td>
+                <td><input v-model.number="height" style="background-color:dimgrey; border:0px"/></td>
+            </tr>
+            <tr>
+                <td colspan="2"><button @click="regeneratePicross()">Regenerate Picross</button></td>
+            </tr>
+            <tr>
+                <td colspan="2"><label>{{ boardDataValidator.isValid ? "VALID :)" : "SORRY :(" }}</label></td>
+            </tr>
+            <tr>
+                <td>wandoolsey</td>
+            </tr>
+        </table>
+
+        <div style="float:right;">
             <Board 
                 v-model="boardData"
                 :width="boardData.width"
@@ -57,7 +65,23 @@ function regeneratePicross(){
     </div>
 
     <div>
-        wandoolsey
+        <table style="text-align:center">
+            <tr>
+                <td colspan="3">
+                    <b>Instructions</b>
+                </td>
+            </tr>
+            <tr>
+                <td>Left Click</td>
+                <td>Middle Mouse</td>
+                <td>Right Click</td>
+            </tr>
+            <tr>
+                <td>Fill Answer</td>
+                <td>Cross Out</td>
+                <td>Hint</td>
+            </tr>
+        </table>
     </div>
 
 </template>
@@ -70,6 +94,14 @@ header {
 .logo {
   display: block;
   margin: 0 auto 2rem;
+}
+
+.options{
+    float: left;
+}
+
+.options td{
+    text-align: center;
 }
 
 @media (min-width: 1024px) {
@@ -91,4 +123,3 @@ header {
   }
 }
 </style>
-./features/BoardData

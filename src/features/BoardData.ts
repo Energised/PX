@@ -4,22 +4,25 @@ export class BoardData{
     height: number;
 
     boardState: boolean[][];
+    solvedBoardState: boolean[][];
     columnHints: number[][];
     rowHints: number[][];
 
     // useful for validation, not used for board display
-    boardStateAsColumns: boolean[][];
+    solvedBoardStateAsColumns: boolean[][];
 
     constructor(width: number, height: number){
         this.width = width;
         this.height = height;
 
         this.boardState = [];
-        this.boardStateAsColumns = [];
+        this.solvedBoardState = [];
+        this.solvedBoardStateAsColumns = [];
         this.columnHints = [];
         this.rowHints = [];
 
         this.generateBoardState();
+        this.generateSolvedBoardState();
         this.generateColumnHints();
         this.generateRowHints();
     }
@@ -31,10 +34,13 @@ export class BoardData{
         this.height = height;
         
         this.boardState = [];
+        this.solvedBoardState = [];
+        this.solvedBoardStateAsColumns = [];
         this.columnHints = [];
         this.rowHints = [];
 
         this.generateBoardState();
+        this.generateSolvedBoardState();
         this.generateColumnHints();
         this.generateRowHints();
     }
@@ -44,10 +50,23 @@ export class BoardData{
         let newState : boolean = false;
         for(let h = 0; h < this.height; h++){
             for(let w = 0; w < this.width; w++){
-                newState = this.getRandomBlockValue();
                 newRow.push(newState);
             }
             this.boardState.push(newRow);
+            newRow = [];
+        }
+
+    }
+
+    generateSolvedBoardState() : void{
+        let newRow : boolean[] = [];
+        let newState : boolean = false;
+        for(let h = 0; h < this.height; h++){
+            for(let w = 0; w < this.width; w++){
+                newState = this.getRandomBlockValue();
+                newRow.push(newState);
+            }
+            this.solvedBoardState.push(newRow);
             newRow = [];
         }
     }
@@ -104,7 +123,7 @@ export class BoardData{
             let rowAsHints : number[] = [];
             let countsOfOne = 0;
             for(let h = 0; h < vm.height; h++){
-                let boardStateColumn : boolean[] = vm.boardState[h];
+                let boardStateColumn : boolean[] = vm.solvedBoardState[h];
                 for(let w = 0; w < vm.width; w++){
                     // if current element is true
                     if(boardStateColumn[w]){
@@ -135,7 +154,7 @@ export class BoardData{
 
         for(let w = 0; w < this.width; w++){
             for(let h = 0; h < this.height; h++){
-                column.push(this.boardState[h][w]);
+                column.push(this.solvedBoardState[h][w]);
             }
             columnAlignedBoardState.push(column);
             column = [];

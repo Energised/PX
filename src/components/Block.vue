@@ -12,18 +12,40 @@ var emit = defineEmits(['blockUpdated']);
 const model = defineModel<boolean>({ default: false});
 
 const background = computed<string>(() => {
-    return model.value ? "filled" : "empty";
+    if(model.value) return "filled";
+    if(hinted.value) return "hint";
+    if(crossed.value) return "crossed";
+    return "empty";
 });
 
-function selectBlock(){
+const hinted = ref(false);
+
+const crossed = ref(false);
+
+function setFilled(){
     model.value = !model.value;
+    hinted.value = false;
     emit("blockUpdated");
+}
+
+function setHintIfEmpty(){
+    if(model.value) return;
+    hinted.value = !hinted.value;
+}
+
+function setCrossed(){
+    hinted.value = false;
+    crossed.value = !crossed.value;
 }
 
 </script>
 
 <template>
-    <div class="size" @click="selectBlock()" :class="background">
+    <div class="size" 
+         @click.left="setFilled()" 
+         @click.right.prevent="setHintIfEmpty()" 
+         @click.middle="setCrossed()"
+         :class="background">
     </div>
 </template>
 
@@ -40,6 +62,15 @@ function selectBlock(){
 
 .empty{
     background-color:grey;
+}
+
+.hint{
+    background-color:yellow;
+}
+
+.crossed{
+    background-color:grey;
+    background-image: url("../assets/cross.png");
 }
 
 </style>

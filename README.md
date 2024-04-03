@@ -1,25 +1,25 @@
 # picross
 
-Third times the charm
+![prototype.png](src/assets/prototype.png)
 
+Third times the charm
 
 ## Notes to Self
 
 - Clean up the display for the board
-    - Redesign the flexbox to give board more space
-    - Align image to side
     - Add a bar to the bottom for buttons, entering a custom board size
     - Add a score counter for how many you've solved
 
 - More functionality for the player
-    - Add a right click function to create a hint highlight
     - Let user build and design their own puzzle
     - Find some good way of saying it - an API with some basic DB functionality
 
-- Generate a way to detect the win condition
-    - Add a little animation and message when the user has completed it
-    - Add a regenerate picross puzzle button
-    - Loop will start all over again
+- Add an animation for when the puzzle is completed
+
+- Fix bug where the crossed state persists across regenerations
+    - Since crossed is not a direct reactive element (i.e. defined in the Hint template in Board.vue)
+    - The element itself is 'reused' since it's not unMounted and reMounted by the v-dom
+    - Think of a different solution for this
 
 ## Customize configuration
 

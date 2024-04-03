@@ -26,7 +26,7 @@ export class BoardDataValidator{
             this.checkValidRow.push(this.isValidBoardStateArray(row, this.filterHintArray(this.boardData.rowHints[index])));
         });
 
-        this.boardData.boardStateAsColumns.forEach((column : boolean[], index : number) => {
+        this.boardData.solvedBoardStateAsColumns.forEach((column : boolean[], index : number) => {
             this.checkValidColumn.push(this.isValidBoardStateArray(column, this.filterHintArray(this.boardData.columnHints[index])));
         });
 
