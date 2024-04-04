@@ -1,8 +1,10 @@
 import { BoardData } from './BoardData'
+import { BlockState } from './BlockState';
 
 export class BoardDataValidator{
 
     boardData: BoardData;
+    boardStateAsColumns: BlockState[][];
     checkValidRow: boolean[];
     checkValidColumn: boolean[];
 
@@ -10,6 +12,7 @@ export class BoardDataValidator{
 
     constructor(game: BoardData){
         this.boardData = game;
+        this.boardStateAsColumns = [];
         this.checkValidRow = [];
         this.checkValidColumn = [];
         this.isValid = false;
@@ -18,15 +21,16 @@ export class BoardDataValidator{
     }
 
     validate(){
+        this.boardStateAsColumns = this.buildBoardStateAsColumns();
         this.checkValidRow = [];
         this.checkValidColumn = [];
         this.isValid = false;
 
-        this.boardData.boardState.forEach((row : boolean[], index : number) => {
+        this.boardData.boardState.forEach((row : BlockState[], index : number) => {
             this.checkValidRow.push(this.isValidBoardStateArray(row, this.filterHintArray(this.boardData.rowHints[index])));
         });
 
-        this.boardData.solvedBoardStateAsColumns.forEach((column : boolean[], index : number) => {
+        this.boardStateAsColumns.forEach((column : BlockState[], index : number) => {
             this.checkValidColumn.push(this.isValidBoardStateArray(column, this.filterHintArray(this.boardData.columnHints[index])));
         });
 
@@ -34,12 +38,12 @@ export class BoardDataValidator{
                     && this.checkValidColumn.every((value : boolean) => value);
     }
 
-    isValidBoardStateArray(boardArray : boolean[], hints : number[]) : boolean{
+    isValidBoardStateArray(boardArray : BlockState[], hints : number[]) : boolean{
         let currentState : number[] = [];
         let countsOfOne = 0;
         for(let s of boardArray){
-            if(s) countsOfOne++;
-            if(!s && countsOfOne > 0){
+            if(s == BlockState.Filled) countsOfOne++;
+            if([BlockState.Empty, BlockState.Hinted, BlockState.Crossed].includes(s) && countsOfOne > 0){
                 currentState.push(countsOfOne);
                 countsOfOne = 0;
             }
@@ -57,5 +61,19 @@ export class BoardDataValidator{
 
     filterHintArray(hintArray: number[]): number[]{
         return hintArray.filter(h => h != 0);
+    }
+
+    buildBoardStateAsColumns() : BlockState[][]{
+        let columnAlignedBoardState : BlockState[][] = [];
+        let column : BlockState[] = [];
+
+        for(let w = 0; w < this.boardData.width; w++){
+            for(let h = 0; h < this.boardData.height; h++){
+                column.push(this.boardData.boardState[h][w]);
+            }
+            columnAlignedBoardState.push(column);
+            column = [];
+        }
+        return columnAlignedBoardState;
     }
 }

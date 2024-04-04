@@ -123,7 +123,7 @@ function validateBoard(){
                                 v-model="model.boardState[y - longestColumnHint][x - longestRowHint]"
                                 :y="y - longestColumnHint"
                                 :x="x - longestRowHint"
-                                @block-updated="validateBoard()">
+                                @revalidate-board="validateBoard()">
                             </Block>
                         </template>
                     </td>

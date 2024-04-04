@@ -1,15 +1,17 @@
+import { BlockState } from "./BlockState"
+
 export class BoardData{
 
     width: number;
     height: number;
 
-    boardState: boolean[][];
-    solvedBoardState: boolean[][];
+    boardState: BlockState[][];
     columnHints: number[][];
     rowHints: number[][];
 
     // useful for validation, not used for board display
-    solvedBoardStateAsColumns: boolean[][];
+    solvedBoardState: BlockState[][];
+    solvedBoardStateAsColumns: BlockState[][];
 
     constructor(width: number, height: number){
         this.width = width;
@@ -46,8 +48,8 @@ export class BoardData{
     }
 
     generateBoardState() : void{
-        let newRow : boolean[] = [];
-        let newState : boolean = false;
+        let newRow : BlockState[] = [];
+        let newState : BlockState = BlockState.Empty;
         for(let h = 0; h < this.height; h++){
             for(let w = 0; w < this.width; w++){
                 newRow.push(newState);
@@ -55,15 +57,14 @@ export class BoardData{
             this.boardState.push(newRow);
             newRow = [];
         }
-
     }
 
     generateSolvedBoardState() : void{
-        let newRow : boolean[] = [];
-        let newState : boolean = false;
+        let newRow : BlockState[] = [];
+        let newState : BlockState = BlockState.Empty;
         for(let h = 0; h < this.height; h++){
             for(let w = 0; w < this.width; w++){
-                newState = this.getRandomBlockValue();
+                newState = this.getRandomBlockValueAsBlockState();
                 newRow.push(newState);
             }
             this.solvedBoardState.push(newRow);
@@ -77,7 +78,7 @@ export class BoardData{
      */
     generateColumnHints() : void{
         let vm = this;
-        this.boardStateAsColumns = this.generateColumnAlignedBoardState();
+        this.solvedBoardStateAsColumns = this.generateColumnAlignedBoardState();
         this.columnHints = generateColumnHints();
         this.applyPreceedingZeroesToHints(this.columnHints);
 
@@ -87,14 +88,14 @@ export class BoardData{
             let columnAsHints : number[] = [];
             let countsOfOne = 0;
             for(let w = 0; w < vm.width; w++){
-                let boardStateColumn : boolean[] = vm.boardStateAsColumns[w];
+                let boardStateColumn : BlockState[] = vm.solvedBoardStateAsColumns[w];
                 for(let h = 0; h < vm.height; h++){
                     // if current element is true
-                    if(boardStateColumn[h]){
+                    if(boardStateColumn[h] == BlockState.Filled){
                         countsOfOne++;
                     }
                     // if current run of trues is finished
-                    if(boardStateColumn[h] == false && countsOfOne != 0){
+                    if(boardStateColumn[h] == BlockState.Empty && countsOfOne != 0){
                         columnAsHints.push(countsOfOne);
                         countsOfOne = 0;
                         continue;
@@ -123,14 +124,14 @@ export class BoardData{
             let rowAsHints : number[] = [];
             let countsOfOne = 0;
             for(let h = 0; h < vm.height; h++){
-                let boardStateColumn : boolean[] = vm.solvedBoardState[h];
+                let boardStateColumn : BlockState[] = vm.solvedBoardState[h];
                 for(let w = 0; w < vm.width; w++){
                     // if current element is true
-                    if(boardStateColumn[w]){
+                    if(boardStateColumn[w] == BlockState.Filled){
                         countsOfOne++;
                     }
                     // if current run of trues is finished
-                    if(boardStateColumn[w] == false && countsOfOne != 0){
+                    if(boardStateColumn[w] == BlockState.Empty && countsOfOne != 0){
                         rowAsHints.push(countsOfOne);
                         countsOfOne = 0;
                         continue;
@@ -148,9 +149,9 @@ export class BoardData{
         }
     }
 
-    generateColumnAlignedBoardState() : boolean[][]{
-        let columnAlignedBoardState : boolean[][] = [];
-        let column : boolean[] = [];
+    generateColumnAlignedBoardState() : BlockState[][]{
+        let columnAlignedBoardState : BlockState[][] = [];
+        let column : BlockState[] = [];
 
         for(let w = 0; w < this.width; w++){
             for(let h = 0; h < this.height; h++){
@@ -163,9 +164,9 @@ export class BoardData{
         return columnAlignedBoardState;
     }
 
-    getRandomBlockValue() : boolean{
+    getRandomBlockValueAsBlockState() : BlockState{
         let valueAsNumber : number = this.randomNumberFrom0To(100) % 2;
-        return !!valueAsNumber; // bang bang you're a boolean (actually works and is favourable in ts)
+        return valueAsNumber == 1 ? BlockState.Filled : BlockState.Empty;
     }
 
     randomNumberFrom0To(value: number): number{

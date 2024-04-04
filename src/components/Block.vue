@@ -1,50 +1,61 @@
 <script setup lang="ts">
 
 import { ref, computed } from 'vue'
+import { BlockState } from '@/features/BlockState';
 
 var props = defineProps<{
     x: number
     y: number
 }>();
 
-var emit = defineEmits(['blockUpdated']);
+var emit = defineEmits(['revalidateBoard']);
 
-const model = defineModel<boolean>({ default: false});
+const model = defineModel<BlockState>({ default: BlockState.Empty});
 
 const background = computed<string>(() => {
-    if(model.value) return "filled";
-    if(hinted.value) return "hint";
-    if(crossed.value) return "crossed";
-    return "empty";
+    switch(model.value){
+        case BlockState.Empty: return "empty"
+        case BlockState.Filled: return "filled"
+        case BlockState.Hinted: return "hinted"
+        case BlockState.Crossed: return "crossed"
+    }
 });
 
-const hinted = ref(false);
-
-const crossed = ref(false);
-
-function setFilled(){
-    model.value = !model.value;
-    hinted.value = false;
-    emit("blockUpdated");
+function setFilledOrEmpty(){
+    if([BlockState.Empty, BlockState.Hinted, BlockState.Crossed].includes(model.value)){
+        model.value = BlockState.Filled;
+    }
+    else{
+        model.value = BlockState.Empty;
+    }
+    emit("revalidateBoard");
 }
 
-function setHintIfEmpty(){
-    if(model.value) return;
-    hinted.value = !hinted.value;
+function setHintedOrEmpty(){
+    if([BlockState.Empty, BlockState.Filled, BlockState.Crossed].includes(model.value)){
+        model.value = BlockState.Hinted;
+    }
+    if(model.value == BlockState.Hinted){
+        model.value = BlockState.Empty;
+    }
 }
 
-function setCrossed(){
-    hinted.value = false;
-    crossed.value = !crossed.value;
+function setCrossedOrEmpty(){
+    if([BlockState.Empty, BlockState.Hinted, BlockState.Filled].includes(model.value)){
+        model.value = BlockState.Crossed;
+    }
+    if(model.value == BlockState.Crossed){
+        model.value = BlockState.Empty;
+    }
 }
 
 </script>
 
 <template>
     <div class="size" 
-         @click.left="setFilled()" 
-         @click.right.prevent="setHintIfEmpty()" 
-         @click.middle="setCrossed()"
+         @click.left="setFilledOrEmpty()" 
+         @click.right.prevent="setHintedOrEmpty()" 
+         @click.middle="setCrossedOrEmpty()"
          :class="background">
     </div>
 </template>
@@ -64,7 +75,7 @@ function setCrossed(){
     background-color:grey;
 }
 
-.hint{
+.hinted{
     background-color:yellow;
 }
 
