@@ -1,13 +1,15 @@
 <script setup lang="ts">
 
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 import type { Ref } from 'vue'
 
 import Board from './components/Board.vue'
+import DraggableMenu from './components/DraggableMenu.vue'
 
 import { BoardData } from './features/BoardData'
 import { BoardDataValidator} from './features/BoardDataValidator'
+
 
 // data
 
@@ -28,60 +30,21 @@ function regeneratePicross(){
 
 <template>
 
-    <div style="display: flow-root;">
+    <div style="display:flex">
 
-        <table class="options">
-            <tr>
-                <td colspan="2"><img alt="orange cat" src="./assets/orange-cat.png" width="270" height="230" style=""/></td>
-            </tr>
-            
-            <tr>
-                <td><label>Width</label></td>
-                <td><input v-model.number="width" style="background-color:dimgrey; border:0px"/></td>
-            </tr>
-            <tr>
-                <td><label>Height</label></td>
-                <td><input v-model.number="height" style="background-color:dimgrey; border:0px"/></td>
-            </tr>
-            <tr>
-                <td colspan="2"><button @click="regeneratePicross()">Regenerate Picross</button></td>
-            </tr>
-            <tr>
-                <td colspan="2"><label>{{ boardDataValidator.isValid ? "VALID :)" : "SORRY :(" }}</label></td>
-            </tr>
-            <tr>
-                <td>wandoolsey</td>
-            </tr>
-        </table>
+        <DraggableMenu
+            v-model:width="width"
+            v-model:height="height"
+            v-model:isValid="boardDataValidator.isValid"
+            @regenerate-board="regeneratePicross()">
+        </DraggableMenu>
 
-        <div style="float:right;">
-            <Board 
-                v-model="boardData"
-                :width="boardData.width"
-                :height="boardData.height"
-                @validate-board="boardDataValidator.validate()">
-            </Board>
-        </div>
-    </div>
-
-    <div>
-        <table style="text-align:center">
-            <tr>
-                <td colspan="3">
-                    <b>Instructions</b>
-                </td>
-            </tr>
-            <tr>
-                <td>Left Click</td>
-                <td>Middle Mouse</td>
-                <td>Right Click</td>
-            </tr>
-            <tr>
-                <td>Fill Answer</td>
-                <td>Cross Out</td>
-                <td>Hint</td>
-            </tr>
-        </table>
+        <Board
+            v-model="boardData"
+            :width="boardData.width"
+            :height="boardData.height"
+            @validate-board="boardDataValidator.validate()">
+        </Board>
     </div>
 
 </template>
