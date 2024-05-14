@@ -30,7 +30,7 @@ function regeneratePicross(){
 
 <template>
 
-    <div style="display:flex">
+    <div>
 
         <DraggableMenu
             v-model:width="width"
@@ -43,8 +43,10 @@ function regeneratePicross(){
             v-model="boardData"
             :width="boardData.width"
             :height="boardData.height"
-            @validate-board="boardDataValidator.validate()">
+            @validate-board="boardDataValidator.validate()"
+            style="display:block;float:right">
         </Board>
+
     </div>
 
 </template>
