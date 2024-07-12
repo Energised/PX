@@ -5,7 +5,9 @@ import { ref, onMounted } from 'vue'
 import type { Ref } from 'vue'
 
 import Board from './components/Board.vue'
-import DraggableMenu from './components/DraggableMenu.vue'
+import Draggable from './components/Draggable.vue'
+import Menu from './components/Menu.vue'
+import Instructions from './components/Instructions.vue'
 
 import { BoardData } from './features/BoardData'
 import { BoardDataValidator} from './features/BoardDataValidator'
@@ -32,12 +34,18 @@ function regeneratePicross(){
 
     <div>
 
-        <DraggableMenu
-            v-model:width="width"
-            v-model:height="height"
-            v-model:isValid="boardDataValidator.isValid"
-            @regenerate-board="regeneratePicross()">
-        </DraggableMenu>
+        <Draggable>
+            <Menu
+                v-model:width="width"
+                v-model:height="height"
+                v-model:isValid="boardDataValidator.isValid"
+                @regenerate-board="regeneratePicross()">
+            </Menu>
+        </Draggable>
+
+        <Draggable>
+            <Instructions></Instructions>
+        </Draggable>
 
         <Board
             v-model="boardData"
