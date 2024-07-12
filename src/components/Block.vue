@@ -81,7 +81,7 @@ function setCrossedOrEmpty(){
 
 .crossed{
     background-color:grey;
-    background-image: url("../assets/cross.png");
+    background-image: url("../assets/cross.jpg");
 }
 
 </style>

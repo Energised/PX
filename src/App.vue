@@ -102,10 +102,4 @@ header {
     left:200px;
     top:500px;
 }
-
-header .wrapper {
-/*display: flex;
-place-items: flex-start;
-flex-wrap: wrap;*/
-}
 </style>

@@ -35,7 +35,7 @@ function playMeow(){
                     src="../assets/orange-cat.png" 
                     width="270" 
                     height="230"
-                    style="pointer-events: none;"/>
+                    class="cat"/>
             </td>
         </tr>
         
@@ -62,3 +62,11 @@ function playMeow(){
         </tr>
     </table>
 </template>
+
+<style scoped>
+
+.cat{
+    pointer-events: none;
+}
+
+</style>
