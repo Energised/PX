@@ -34,7 +34,7 @@ function regeneratePicross(){
 
     <div>
 
-        <Draggable>
+        <Draggable id="menu">
             <Menu
                 v-model:width="width"
                 v-model:height="height"
@@ -43,7 +43,7 @@ function regeneratePicross(){
             </Menu>
         </Draggable>
 
-        <Draggable>
+        <Draggable id="instructions">
             <Instructions></Instructions>
         </Draggable>
 
@@ -60,6 +60,7 @@ function regeneratePicross(){
 </template>
 
 <style scoped>
+
 header {
   line-height: 1.5;
 }
@@ -78,21 +79,33 @@ header {
 }
 
 @media (min-width: 1024px) {
-  header {
-    display: flex;
-    flex-flow: column;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+    header {
+        display: flex;
+        flex-flow: column;
+        place-items: center;
+        padding-right: calc(var(--section-gap) / 2);
+    }
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+    .logo {
+        margin: 0 2rem 0 0;
+    }
+}
 
-  header .wrapper {
-    /*display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;*/
-  }
+/* Initial positions */
+
+#menu {
+    left:200px;
+    top:30px;
+}
+
+#instructions {
+    left:200px;
+    top:500px;
+}
+
+header .wrapper {
+/*display: flex;
+place-items: flex-start;
+flex-wrap: wrap;*/
 }
 </style>

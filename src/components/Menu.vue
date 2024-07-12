@@ -35,7 +35,7 @@ function playMeow(){
                     src="../assets/orange-cat.png" 
                     width="270" 
                     height="230"
-                    style="user-select: none;"/>
+                    style="pointer-events: none;"/>
             </td>
         </tr>
         

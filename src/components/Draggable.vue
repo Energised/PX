@@ -50,11 +50,7 @@ onUnmounted(() => {
 .draggable {
     position: absolute;
     cursor: move;
-}
-
-.draggable::before{
-    left:620px;
-    top:30px;
+    user-select: none;
 }
 
 </style>
