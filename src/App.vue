@@ -94,12 +94,12 @@ header {
 /* Initial positions */
 
 #menu {
-    left:200px;
+    left:650px;
     top:30px;
 }
 
 #instructions {
-    left:200px;
-    top:500px;
+    left:100px;
+    top:200px;
 }
 </style>
