@@ -4,6 +4,8 @@ import { ref, onMounted } from 'vue'
 
 import type { Ref } from 'vue'
 
+import axios from 'axios';
+
 import Board from './components/Board.vue'
 import Draggable from './components/Draggable.vue'
 import Menu from './components/Menu.vue'
@@ -28,6 +30,27 @@ function regeneratePicross(){
     boardDataValidator.value.validate();
 }
 
+async function dataHandlerRequest(){
+    let url = "https://localhost:7004/DataHandler/Save";
+    let data = {
+        testString: "this is the request data",
+        boardData: boardData.value
+    };
+
+    let response = await axios.post(url, data);
+    console.log(response.data);
+}
+
+async function solverRequest(){
+    let url = "https://localhost:7004/Solver";
+    let data = {
+        testString: "this is the request data"
+    };
+
+    let response = await axios.post(url, data);
+    console.log(response.data);
+}
+
 </script>
 
 <template>
@@ -43,7 +66,7 @@ function regeneratePicross(){
             </Menu>
         </Draggable>
 
-        <Draggable id="instructions">
+        <Draggable id="instructions"> 
             <Instructions></Instructions>
         </Draggable>
 
@@ -54,6 +77,8 @@ function regeneratePicross(){
             @validate-board="boardDataValidator.validate()"
             style="display:block;float:right">
         </Board>
+
+        <button @click="dataHandlerRequest()"> Click me!</button>
 
     </div>
 

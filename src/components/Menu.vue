@@ -48,7 +48,7 @@ function playMeow(){
             <td><input v-model.number="height" style="background-color:whitesmoke; border:0px"/></td>
         </tr>
         <tr>
-            <td colspan="2">
+            <td>
                 <button @click="emit('regenerateBoard')"
                         :disabled="isWidthOrHeightGreaterThan30">Regenerate Picross
                 </button>
