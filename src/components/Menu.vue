@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { computed } from 'vue'
 
 const width = defineModel<number>('width', {default: 10});
 const height = defineModel<number>('height', {default: 10});

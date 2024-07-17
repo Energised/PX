@@ -5,6 +5,7 @@ import { ref, onMounted } from 'vue'
 import type { Ref } from 'vue'
 
 import axios from 'axios';
+import type { AxiosResponse } from 'axios';
 
 import Board from './components/Board.vue'
 import Draggable from './components/Draggable.vue'
@@ -42,13 +43,15 @@ async function dataHandlerRequest(){
 }
 
 async function solverRequest(){
-    let url = "https://localhost:7004/Solver";
-    let data = {
-        testString: "this is the request data"
+    let url : string = "https://localhost:7004/Solver";
+    let data : object = {
+        boardToSolve: boardData.value
     };
 
-    let response = await axios.post(url, data);
-    console.log(response.data);
+    let response : AxiosResponse = await axios.post(url, data);
+    
+    let solvedBoard : BoardData = response.data.solvedBoard;
+    boardData.value.boardState = solvedBoard.boardState;
 }
 
 </script>
@@ -78,7 +81,7 @@ async function solverRequest(){
             style="display:block;float:right">
         </Board>
 
-        <button @click="dataHandlerRequest()"> Click me!</button>
+        <button @click="solverRequest()"> Click me!</button>
 
     </div>
 
